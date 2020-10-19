@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+<header th:include="header"></header>
+<section class="stats">
+    <div class="container container--85">
+        <div class="stats--item">
+            <em>13</em>
+
+            <h3 th:text="#{quantity.of.packages.message}"></h3>
+            <p th:text="#{first.comment.message}"></p>
+        </div>
+
+        <div class="stats--item">
+            <em>5</em>
+            <h3 th:text="#{quantity.of.gifts.message}"></h3>
+            <p th:text="#{second.comment.message}"></p>
+        </div>
+
+    </div>
+</section>
+
+<section class="steps">
+    <h2 th:text="#{steps.title.message}"></h2>
+
+    <div class="steps--container">
+        <div class="steps--item">
+            <span class="icon icon--hands"></span>
+            <h3 th:text="#{first.step.title.message}"></h3>
+            <p th:text="#{first.step.content.message}"></p>
+        </div>
+        <div class="steps--item">
+            <span class="icon icon--arrow"></span>
+            <h3 th:text="#{second.step.title.message}"></h3>
+            <p th:text="#{second.step.content.message}"></p>
+        </div>
+        <div class="steps--item">
+            <span class="icon icon--glasses"></span>
+            <h3 th:text="#{third.step.title.message}"></h3>
+            <p th:text="#{third.step.content.message}"></p>
+        </div>
+        <div class="steps--item">
+            <span class="icon icon--courier"></span>
+            <h3 th:text="#{fourth.step.title.message}"></h3>
+            <p th:text="#{fourth.step.content.message}"></p>
+        </div>
+    </div>
+
+    <a href="#" class="btn btn--large" th:text="#{create.account.message}"></a>
+</section>
+
+<section class="about-us">
+    <div class="about-us--text">
+        <h2 th:text="#{about.us.message}"></h2>
+        <p th:text="#{about.us.content.message}"></p>
+        <img th:src="@{/resources/images/signature.svg}" class="about-us--text-signature" alt="Signature"/>
+    </div>
+    <div class="about-us--image"><img th:src="@{/resources/images/about-us.jpg}" alt="People in circle"/>
+    </div>
+</section>
+
+<section class="help">
+    <h2 th:text="#{cooperation.title.message}"></h2>
+
+    <!-- SLIDE 1 -->
+    <div class="help--slides active" data-id="1">
+        <p th:text="#{cooperation.content.message}"></p>
+
+        <ul class="help--slides-items">
+            <li>
+                <div class="col">
+                    <div class="title">Fundacja "Dbam o Zdrowie"</div>
+                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
+                </div>
+
+                <div class="col">
+                    <div class="title">Fundacja "A kogo"</div>
+                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="col">
+                    <div class="title">Fundacja “Dla dzieci"</div>
+                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
+                </div>
+                <div class="col">
+                    <div class="title">Fundacja “Bez domu”</div>
+                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
+                </div>
+
+            </li>
+
+        </ul>
+    </div>
+
+</section>
+
+<footer th:include="footer"></footer>
+<script th:src="@{/resources/js/app.js}"></script>
+</body>
+</html>

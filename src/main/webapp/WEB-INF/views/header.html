@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    <meta charset="UTF-8">-->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+
+    <link rel="stylesheet" th:href="@{../../resources/css/style.css}"/>
+
+</head>
+<body>
+<header class="header--main-page">
+    <nav class="container container--70">
+        <ul class="nav--actions">
+            <li><a href="" class="btn btn--small btn--without-border" th:text="#{login.message}"></a></li>
+            <li><a href="#" class="btn btn--small btn--highlighted" th:text="#{create.account.message}"></a></li>
+        </ul>
+
+        <ul>
+            <li><a href="#" class="btn btn--without-border active" th:text="#{start.message}"></a></li>
+            <li><a href="#" class="btn btn--without-border" th:text="#{about.idea.message}"></a></li>
+            <li><a href="#" class="btn btn--without-border" th:text="#{about.us.message}"></a></li>
+            <li><a href="#" class="btn btn--without-border" th:text="#{institutions.message}"></a></li>
+            <li><a href="#" class="btn btn--without-border" th:text="#{contact.message}"></a></li>
+        </ul>
+    </nav>
+
+    <div class="slogan container container--90">
+        <div class="slogan--item">
+            <h1>
+                <a th:text="#{slogan.first.part.message}"></a><br>
+                <a th:text="#{slogan.second.part.message}"></a>
+            </h1>
+        </div>
+    </div>
+</header>
+<script th:src="@{/resources/js/app.js}"></script>
+</body>
+</html>
