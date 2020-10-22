@@ -1,37 +1,33 @@
-package pl.coderslab.charity.entities;
+package pl.coderslab.charity.dtos.donation;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.coderslab.charity.dtos.category.CategoryDTO;
+import pl.coderslab.charity.dtos.institution.InstitutionDTO;
+import pl.coderslab.charity.entities.Category;
+import pl.coderslab.charity.entities.Institution;
 
-import javax.persistence.*;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-@Entity
 @Getter
 @Setter
-@Table(name = "donation")
 @ToString
-public class Donation   {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class NewDonationDTO {
     private Integer quantity;
-    @ManyToMany
-    private List<Category> categories=new ArrayList<>();
-    @ManyToOne
-    private Institution institution;
+    private List<Long> categoriesId=new ArrayList<>();
+    private Long institutionId;
     private String street;
     private String city;
     private String zipCode;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String phoneNumber;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate pickUpDate;
     private LocalTime pickUpTime;
     private String pickUpComment;
-
-
 }
