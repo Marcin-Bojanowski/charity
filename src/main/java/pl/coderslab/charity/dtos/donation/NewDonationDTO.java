@@ -1,5 +1,6 @@
 package pl.coderslab.charity.dtos.donation;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,15 +10,12 @@ import pl.coderslab.charity.dtos.institution.InstitutionDTO;
 import pl.coderslab.charity.entities.Category;
 import pl.coderslab.charity.entities.Institution;
 
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-@Getter
-@Setter
-@ToString
+@Data
 public class NewDonationDTO {
     private Integer quantity;
     private List<Long> categoriesId=new ArrayList<>();

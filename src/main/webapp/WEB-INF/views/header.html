@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
-
+<!--    <script src="../../resources/js/js.js"></script>-->
     <link rel="stylesheet" th:href="@{../../resources/css/style.css}"/>
 
 </head>
@@ -15,7 +15,7 @@
     <nav class="container container--70">
         <ul class="nav--actions">
             <li><a href="" class="btn btn--small btn--without-border" th:text="#{login.message}"></a></li>
-            <li><a href="#" class="btn btn--small btn--highlighted" th:text="#{create.account.message}"></a></li>
+            <li><a th:href="@{/register}" class="btn btn--small btn--highlighted" th:text="#{create.account.message}"></a></li>
         </ul>
 
         <ul>
@@ -36,6 +36,6 @@
         </div>
     </div>
 </header>
-<script th:src="@{/resources/js/app.js}"></script>
+
 </body>
 </html>

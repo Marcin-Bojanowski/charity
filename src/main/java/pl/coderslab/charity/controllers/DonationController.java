@@ -23,11 +23,10 @@ public class DonationController {
 
     private final CategoryService categoryService;
     private final InstitutionService institutionService;
-private final DonationService donationService;
+    private final DonationService donationService;
 
     @ModelAttribute("categories")
     public List<CategoryDTO> getCategories() {
-        System.out.println(categoryService.getAll());
         return categoryService.getAll();
     }
 
@@ -44,7 +43,7 @@ private final DonationService donationService;
 
     @PostMapping
     public String saveDonation(@ModelAttribute NewDonationDTO newDonationDTO) {
-        System.out.println(newDonationDTO);
+
         donationService.save(newDonationDTO);
         return "form-confirmation";
     }

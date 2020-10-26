@@ -1,61 +1,55 @@
 package pl.coderslab.charity.services;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.dtos.donation.NewDonationDTO;
 import pl.coderslab.charity.entities.Category;
 import pl.coderslab.charity.entities.Donation;
 import pl.coderslab.charity.repositories.DonationRepository;
+import pl.coderslab.charity.utilities.CustomMapper;
 
 import javax.print.attribute.standard.Destination;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @Service
 @Transactional
+@Slf4j
+@RequiredArgsConstructor
 public class DonationService {
+
     private final DonationRepository donationRepository;
-//    private final ModelMapper modelMapper;
-    private final InstitutionService institutionService;
-    private final CategoryService categoryService;
+    private CustomMapper customMapper;
+//
+//    @Autowired
+//    private DonationService(DonationRepository donationRepository){
+//        this.donationRepository=donationRepository;
+//    }
+
+    @Autowired
+    private void setCustomMapper(CustomMapper customMapper) {
+        this.customMapper = customMapper;
+    }
+
 
     public Integer getQuantityOfBags() {
-        List<Donation> donations = donationRepository.getAll();
+        List<Donation> donations = donationRepository.findAll();
         return donations.stream().mapToInt(Donation::getQuantity).sum();
     }
 
     public Integer getQuantityOfDonations() {
-        return donationRepository.getQuantityOfDonations();
+        return (int) donationRepository.count();
     }
 
     public void save(NewDonationDTO newDonationDTO) {
-        donationRepository.save(newDonationMapper(newDonationDTO));
+        log.info("{}", newDonationDTO);
+        donationRepository.save(customMapper.map(newDonationDTO));
     }
 
-    private Donation newDonationMapper(NewDonationDTO newDonationDTO) {
-        ModelMapper modelMapper=new ModelMapper();
-        PropertyMap<NewDonationDTO, Donation> propertyMap = new PropertyMap<NewDonationDTO, Donation>() {
-            @Override
-            protected void configure() {
 
-                skip(destination.getId());
-                skip(destination.getCategories());
-                skip(destination.getInstitution());
-//                map(institutionService.getById(source.getInstitutionId()),destination);
-//                skip(destination.getInstitution());
-            }
-        };
-        modelMapper.addMappings(propertyMap);
-        Donation donation = modelMapper.map(newDonationDTO, Donation.class);
-        System.out.println(donation);
-        for (Long id : newDonationDTO.getCategoriesId()) {
-            donation.getCategories().add(categoryService.getById(id));
-        }
-        donation.setInstitution(institutionService.getById(newDonationDTO.getInstitutionId()));
-        System.out.println(donation);
-        return donation;
-    }
 }

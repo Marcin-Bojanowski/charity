@@ -1,13 +1,15 @@
-package pl.coderslab.charity.entities;
+package pl.coderslab.charity.entities.classes;
 
-import lombok.Data;
-
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 @Entity
 @Data
-@Table(name = "category")
-public class Category {
+@Table(name = "roles")
+public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

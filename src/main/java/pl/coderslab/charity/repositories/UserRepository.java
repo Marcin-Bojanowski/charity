@@ -2,14 +2,16 @@ package pl.coderslab.charity.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.coderslab.charity.entities.Category;
+import pl.coderslab.charity.entities.User;
 
 import javax.transaction.Transactional;
 
-
 @Transactional
 @Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
+public interface UserRepository extends JpaRepository<User,Long> {
 
+    User getByEmail(String email);
+
+    boolean existsByEmail(String email);
 
 }

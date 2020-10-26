@@ -1,11 +1,10 @@
 package pl.coderslab.charity.dtos.institution;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+
+@Data
 public class InstitutionDTO {
     private Long id;
     private String name;
