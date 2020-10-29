@@ -26,7 +26,8 @@ public class InstitutionsController {
     }
 
     @GetMapping("/institutions")
-    public String institutions(){
+    public String institutions(@RequestParam Long toEdit, Model model) {
+        model.addAttribute("toEditId", toEdit);
         return "institution/institutions";
     }
 

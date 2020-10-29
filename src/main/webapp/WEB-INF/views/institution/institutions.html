@@ -22,11 +22,19 @@
             <ul class="help--slides-items">
 
                 <li>
+
+                    <form th:if="${toEditId != null} and {institutions[i].id == toEditId}" th:action="@{/admin/editInstitution/{id}(id=${institutions[i].id})}" th:object="institutions[i]">
                     <div class="col">
+                        <div class="title"><input type="text" th:field="*{name}"/></div>
+                        <div class="subtitle"><input type="text" th:field="*{subtitle}"/></div>
+                        <button class="btn" type="submit" th:text="Zapisz"></button>
+                    </div>
+                    </form>
+                    <div class="col" th:if="${toEditId == null} or ${institutions[i].id != toEditId}">
                         <div class="title" th:text="${institutions[i].name}"></div>
                         <div class="subtitle" th:text="${institutions[i].description}"></div>
-                        <a class="btn" type="button" th:href="@{/WEB-INF/views/admin/editInstitution/{id}(id=${institutions[i].id})}" th:text="Edytuj"></a>
-                        <a class="btn" type="button" th:href="@{/WEB-INF/views/admin/deleteInstitution/{id}(id=${institutions[i].id})}" th:text="Usuń"></a>
+                        <a class="btn" type="button" th:href="@{/admin/institutions(toEdit=${institutions[i].id})}" th:text="Edytuj"></a>
+                        <a class="btn" type="button" th:href="@{/admin/deleteInstitution/{id}(id=${institutions[i].id})}" th:text="Usuń"></a>
                     </div>
 
                     <div class="col" >
