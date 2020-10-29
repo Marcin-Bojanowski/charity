@@ -9,17 +9,20 @@ import lombok.Setter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Component;
 import pl.coderslab.charity.dtos.category.CategoryDTO;
 import pl.coderslab.charity.dtos.donation.NewDonationDTO;
 import pl.coderslab.charity.dtos.institution.InstitutionDTO;
+
+import pl.coderslab.charity.dtos.institution.NewInstitutionDTO;
+import pl.coderslab.charity.dtos.user.EditUserDTO;
 import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.Category;
 import pl.coderslab.charity.entities.Donation;
 import pl.coderslab.charity.entities.Institution;
+
 import pl.coderslab.charity.entities.User;
-import pl.coderslab.charity.entities.classes.Role;
 import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.InstitutionService;
 
@@ -48,6 +51,16 @@ public class CustomMapper {
 
 
 
+public UserDTO map(User user){
+        Mapper<User,UserDTO> mapper=Mapping
+                .from(User.class)
+                .to(UserDTO.class)
+                .omitInSource(User::getRoles)
+                .omitInSource(User::getPassword)
+                .mapper();
+
+        return mapper.map(user);
+}
 
     public InstitutionDTO map(Institution institution) {
         Mapper<Institution, InstitutionDTO> mapper = Mapping
@@ -64,6 +77,16 @@ public class CustomMapper {
                 .mapper();
 
         return mapper.map(category);
+    }
+
+    public Institution map(NewInstitutionDTO newInstitutionDTO){
+        Mapper<NewInstitutionDTO, Institution> mapper=Mapping
+                .from(NewInstitutionDTO.class)
+                .to(Institution.class)
+                .omitInDestination(Institution::getId)
+                .mapper();
+
+        return mapper.map(newInstitutionDTO);
     }
 
     public Donation map(NewDonationDTO newDonationDTO) {

@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class UserDTO {
+public class EditUserDTO  {
 
     private Long id;
     @NotBlank(message = "{not.blank.message}")

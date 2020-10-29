@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.dtos.institution.InstitutionDTO;
+import pl.coderslab.charity.dtos.institution.NewInstitutionDTO;
 import pl.coderslab.charity.entities.Institution;
 import pl.coderslab.charity.repositories.InstitutionRepository;
 import pl.coderslab.charity.utilities.CustomMapper;
@@ -21,20 +22,43 @@ import java.util.stream.Collectors;
 
 public class InstitutionService {
     private final InstitutionRepository institutionRepository;
-    private  CustomMapper customMapper;
+    private CustomMapper customMapper;
+
 
     @Autowired
     private void setCustomMapper(CustomMapper customMapper) {
         this.customMapper = customMapper;
     }
 
-    public List< InstitutionDTO> getAll() {
+    public List<InstitutionDTO> getAll() {
         List<Institution> institutions = institutionRepository.findAll();
         return institutions.stream().map(customMapper::map).collect(Collectors.toList());
     }
-public Institution getById(Long id){
+
+    public Institution getById(Long id) {
         return institutionRepository.getOne(id);
-}
+    }
+
+    public InstitutionDTO getDtoById(Long id) {
+        return customMapper.map(institutionRepository.getOne(id));
+    }
 
 
+    public void save(NewInstitutionDTO newInstitution) {
+        Institution institution = new Institution();
+        institution = customMapper.map(newInstitution);
+        institutionRepository.save(institution);
+    }
+
+    public void update(InstitutionDTO institutionDTO) {
+        Institution institution=institutionRepository.getOne(institutionDTO.getId());
+        institution.setName(institutionDTO.getName());
+        institution.setDescription(institutionDTO.getDescription());
+        institutionRepository.save(institution);
+    }
+
+    public void delete(Long id) {
+        Institution institution=institutionRepository.getOne(id);
+        institutionRepository.delete(institution);
+    }
 }

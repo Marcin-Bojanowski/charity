@@ -2,44 +2,54 @@ package pl.coderslab.charity.controllers;
 
 import com.google.common.collect.Iterables;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.user.NewUserDTO;
+import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.services.RegistrationService;
+import pl.coderslab.charity.services.UserService;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
-@RequiredArgsConstructor
 @Controller
-@RequestMapping("/register")
-@Slf4j
-public class RegisterController {
-
+@RequiredArgsConstructor
+@RequestMapping("/admin")
+public class UsersController {
+    private final UserService userService;
     private final RegistrationService registrationService;
 
-
-    @GetMapping
-    public String registrationForm(Model model){
-        model.addAttribute("userDTO",new NewUserDTO());
-        return "register";
+    @ModelAttribute("users")
+    public List<UserDTO> getUsers() {
+        return   userService.getAllUsersDTO();
     }
 
-    @PostMapping
-    public String register(@Valid NewUserDTO newUserDTO, BindingResult result, Model model){
+    @GetMapping("/users")
+    public String getAllUsers(){
+        return "user/users";
+    }
+
+
+
+    @GetMapping("/editUser/{id}")
+    public String editAdmin(@PathVariable Long id, Model model){
+        model.addAttribute("user",userService.getUserToEdit(id));
+        return "user/editUser";
+    }
+
+    @PostMapping("/editUser")
+    public String updateAdmin(@ModelAttribute UserDTO userDTO, BindingResult result){
         if (result.hasErrors()){
-            return "register";
+            return "user/editUser";
         }
         try {
-            registrationService.registerUser(newUserDTO);
+            registrationService.update(userDTO);
         } catch (ConstraintViolationException exception){
             Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
             for (ConstraintViolation<?> violation : violations) {
@@ -48,8 +58,14 @@ public class RegisterController {
                 String property = Iterables.getLast(propertyPath).toString();
                 result.rejectValue(property,message);
             }
-            return "register";
+            return "user/editUser";
         }
-        return "login";
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable Long id){
+        userService.delete(id);
+        return "redirect:/admin/users";
     }
 }

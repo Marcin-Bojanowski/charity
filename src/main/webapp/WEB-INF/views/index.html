@@ -74,8 +74,7 @@
     <!-- SLIDE 1 -->
     <div class="help--slides active" data-id="1">
         <p th:text="#{cooperation.content.message}"></p>
-
-<th:block th:each="i: ${#numbers.sequence(0, institutions.size()-1,2)}">
+        <th:block th:each="i: ${#numbers.sequence(0, institutions.size()-1,2)}">
 
             <ul class="help--slides-items">
 
@@ -86,13 +85,14 @@
                     </div>
 
                     <div class="col" >
-                        <div class="title" th:text="${institutions[i+1].name}"></div>
-                        <div class="subtitle"  th:text="${institutions[i+1].description}"></div>
+                        <div class="title" th:if="${i<institutions.size()-1}" th:text="${institutions[i+1].name}"></div>
+                        <div class="subtitle" th:if="${i<institutions.size()-1}"  th:text="${institutions[i+1].description}"></div>
                     </div>
                 </li>
 
             </ul>
         </th:block>
+
     </div>
 
 </section>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <script src="../../../resources/js/js.js"></script>
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
+
+</head>
+<body>
+<header th:include="header"></header>
+<section class="help">
+
+
+    <!-- SLIDE 1 -->
+    <div class="help--slides active" data-id="1">
+
+        <th:block  th:each="i: ${#numbers.sequence(0,  admins.size()-1,2)}">
+
+            <ul class="help--slides-items">
+
+                <li>
+                    <div class="col">
+                        <div class="title" th:text="${admins[i].name}"></div>
+                        <div class="subtitle" th:text="${admins[i].surname}"></div>
+                        <div class="subtitle" th:text="${admins[i].email}"></div>
+                        <a class="btn" type="button" th:href="@{/admin/editAdmin/{id}(id=${admins[i].id})}" th:text="Edytuj"></a>
+                        <a class="btn" type="button" th:href="@{/admin/deleteAdmin/{id}(id=${admins[i].id})}" th:text="Usuń"></a>
+                    </div>
+
+                    <div class="col" >
+                        <div class="title" th:if="${i<admins.size()-1}" th:text="${admins[i+1].name}"></div>
+                        <div class="subtitle" th:if="${i<admins.size()-1}"  th:text="${admins[i+1].surname}"></div>
+                        <div class="subtitle" th:if="${i<admins.size()-1}"  th:text="${admins[i+1].email}"></div>
+                        <div>  <a class="btn " th:if="${i<admins.size()-1}" th:href="@{/admin/editAdmin/{id}(id=${admins[i+1].id})}" th:text="Edytuj"></a>
+                            <a class="btn " th:if="${i<admins.size()-1}" th:href="@{/admin/deleteAdmin/{id}(id=${admins[i+1].id})}" th:text="Usuń"></a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </th:block>
+
+    </div>
+
+</section>
+<footer th:include="footer"></footer>
+</body>
+</html>

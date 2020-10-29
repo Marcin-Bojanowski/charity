@@ -1,4 +1,4 @@
-package pl.coderslab.charity.entities.superClasses;
+package pl.coderslab.charity.entities.base;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

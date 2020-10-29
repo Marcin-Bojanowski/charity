@@ -1,6 +1,5 @@
 package pl.coderslab.charity.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entities.User;
-import pl.coderslab.charity.entities.superClasses.CurrentUser;
+import pl.coderslab.charity.entities.base.CurrentUser;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +32,7 @@ public class SpringDataUserDetailsService implements UserDetailsService {
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         user.getRoles().forEach(r ->
-                grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));
+                grantedAuthorities.add(new SimpleGrantedAuthority(r)));
         return new CurrentUser(user.getEmail(),user.getPassword(),
                 grantedAuthorities, user);
 

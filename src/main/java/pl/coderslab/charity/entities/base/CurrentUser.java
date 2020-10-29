@@ -1,6 +1,5 @@
-package pl.coderslab.charity.entities.superClasses;
+package pl.coderslab.charity.entities.base;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
