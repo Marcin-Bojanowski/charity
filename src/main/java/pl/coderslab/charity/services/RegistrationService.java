@@ -31,6 +31,8 @@ public class RegistrationService {
         user.setSurname(newUserDTO.getSurname());
         user.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         user.getRoles().add("ROLE_USER");
+        user.setActive(true);
+        user.setBlocked(false);
         userRepository.save(user);
     }
 
@@ -42,6 +44,8 @@ public class RegistrationService {
         user.setSurname(newUserDTO.getSurname());
         user.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         user.getRoles().add("ROLE_ADMIN");
+        user.setActive(true);
+        user.setBlocked(false);
         userRepository.save(user);
     }
 

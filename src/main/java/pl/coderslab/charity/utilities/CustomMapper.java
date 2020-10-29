@@ -107,4 +107,7 @@ public UserDTO map(User user){
         return donation;
     }
 
+    public CategoryDTO mapToCategoryDTO(Category category) {
+        return null;
+    }
 }

@@ -19,6 +19,8 @@ public class User {
     private String surname;
     private String email;
     private String password;
+    private Boolean active;
+    private Boolean blocked;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))

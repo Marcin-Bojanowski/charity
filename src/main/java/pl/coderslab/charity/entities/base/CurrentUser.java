@@ -11,7 +11,7 @@ public class CurrentUser extends User {
     public CurrentUser(String username, String password,
                        Collection<? extends GrantedAuthority> authorities,
     pl.coderslab.charity.entities.User user) {
-        super(username, password, authorities);
+        super(username, password, user.getActive(), true, true, false, authorities);
         this.user = user;
     }
 
