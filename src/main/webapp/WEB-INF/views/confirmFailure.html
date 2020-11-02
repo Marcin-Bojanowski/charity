@@ -10,7 +10,7 @@
 </head>
 <body>
 <header th:include="header"></header>
-<h1 th:text="#{${error}}"></h1>
+<h1 th:text="${#messages.msg(error)}"></h1>
 <footer th:include="footer"></footer>
 </body>
 </html>

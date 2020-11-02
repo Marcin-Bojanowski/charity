@@ -22,23 +22,23 @@ public class WebAppConfig implements WebMvcConfigurer {
 //        registry.addViewController("/login").setViewName("login");
 ////        registry.addViewController("/403").setViewName("403");
 //    }
-
-
-    @Bean
-    public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:messages");
-        messageSource.setDefaultEncoding("UTF-8");
-        return messageSource;
-    }
-
-    @Bean
-    @Override
-    public Validator getValidator() {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(messageSource());
-        return bean;
-    }
+//
+//
+//    @Bean
+//    public MessageSource messageSource() {
+//        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+//        messageSource.setBasename("classpath:messages");
+//        messageSource.setDefaultEncoding("UTF-8");
+//        return messageSource;
+//    }
+//
+//    @Bean
+//    @Override
+//    public Validator getValidator() {
+//        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+//        bean.setValidationMessageSource(messageSource());
+//        return bean;
+//    }
 
     @Bean
     public JavaMailSender getJavaMailSender() {
