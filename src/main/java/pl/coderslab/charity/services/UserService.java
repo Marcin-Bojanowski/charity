@@ -8,6 +8,7 @@ import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.User;
 import pl.coderslab.charity.repositories.UserRepository;
 import pl.coderslab.charity.utilities.CustomMapper;
+import pl.coderslab.charity.utilities.LoggedUser;
 
 
 import javax.transaction.Transactional;
@@ -22,7 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CustomMapper customMapper;
-
+private final LoggedUser loggedUser;
     public User getByEmail(String email) {
         return userRepository.getByEmail(email);
     }
@@ -45,8 +46,16 @@ public class UserService {
         return customMapper.map(userRepository.getOne(id));
     }
 
+    public EditUserDTO getUserToEdit() {
+        return customMapper.mapLoggedUser(loggedUser.getLoggedUser());
+    }
+
     public void delete(Long id) {
         User user=userRepository.getOne(id);
         userRepository.delete(user);
+    }
+
+    public User getUserById(Long id){
+        return userRepository.getOne(id);
     }
 }

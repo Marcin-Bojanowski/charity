@@ -7,45 +7,114 @@
     <title>Document</title>
     <script src="../../../resources/js/js.js"></script>
     <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
 </head>
 <body>
 <header th:include="header"></header>
-<section class="help">
+<div class="container">
 
 
-    <!-- SLIDE 1 -->
-    <div class="help--slides active" data-id="1">
+        <table class="table" style="width:1200px; font-size: large">
+            <thead>
+            <tr>
 
-        <th:block  th:each="i: ${#numbers.sequence(0,  users.size()-1,2)}">
 
-            <ul class="help--slides-items">
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Akcje</th>
 
-                <li>
-                    <div class="col">
-                        <div class="title" th:text="${users[i].name}"></div>
-                        <div class="subtitle" th:text="${users[i].surname}"></div>
-                        <div class="subtitle" th:text="${users[i].email}"></div>
-                        <a class="btn" type="button" th:href="@{/admin/editUser/{id}(id=${users[i].id})}" th:text="Edytuj"></a>
-                        <a class="btn" type="button" th:href="@{/admin/deleteUser/{id}(id=${users[i].id})}" th:text="Usuń"></a>
-                    </div>
+            </tr>
+            </thead>
+            <th:block th:each="user: ${users}">
+            <form th:object="${userToEdit}" th:if="${userToEdit != null} and ${user.id == userToEdit.id}"
+                  th:action="@{/admin/editUser}" method="post">
+                <input type="hidden" th:field="*{id}" name="id"/>
+                <tr>
 
-                    <div class="col" >
-                        <div class="title" th:if="${i<users.size()-1}" th:text="${users[i+1].name}"></div>
-                        <div class="subtitle" th:if="${i<users.size()-1}"  th:text="${users[i+1].surname}"></div>
-                        <div class="subtitle" th:if="${i<users.size()-1}"  th:text="${users[i+1].email}"></div>
-                        <div>  <a class="btn " th:if="${i<users.size()-1}" th:href="@{/admin/editUser/{id}(id=${users[i+1].id})}" th:text="Edytuj"></a>
-                            <a class="btn " th:if="${i<users.size()-1}" th:href="@{/admin/deleteUser/{id}(id=${users[i+1].id})}" th:text="Usuń"></a>
-                        </div>
-                    </div>
-                </li>
+                    <td><input type="text" th:field="*{name}" name="name"/></td>
+                    <td><input type="text" th:field="*{surname}" name="surname"/></td>
+                    <td><input type="text" th:field="*{email}" name="email"/></td>
+                    <td>Zabkolowany
+                        <input type="radio" th:field="*{locked}" th:value="false">
 
-            </ul>
-        </th:block>
+                        Nie zabkolowany
+                        <input type="radio" th:field="*{locked}" th:value="true">
 
-    </div>
+                    <td>
+                        <button class="btn" type="submit" th:text="Zapisz"></button>
+                    </td>
+                </tr>
+            </form>
+            <div class="col" th:if="${userToEdit == null} or ${userToEdit.id!=user.id}">
+                </tr>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.surname}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:if="${user.locked}==false">Zablokowany</td>
+                <td th:if="${user.locked}==true"></td>
+                <td>
+                    <a class="btn--highlighted" type="button" th:href="@{/admin/users(toEdit=${user.id})}"
+                       th:text="Edytuj"></a>
+                    <a class="btn--highlighted" type="button" th:href="@{/admin/deleteUser/{id}(id=${user.id})}"
+                       th:text="Usuń"></a>
+                </td>
+                </tr>
+            </div>
 
-</section>
+
+
+
+    </th:block>
+        </table>
+</div>
+<!--<section class="help">-->
+
+
+<!--    &lt;!&ndash; SLIDE 1 &ndash;&gt;-->
+<!--    <div class="help&#45;&#45;slides active" data-id="1">-->
+
+<!--        <th:block  th:each="i: ${#numbers.sequence(0,  users.size()-1,2)}">-->
+
+<!--            <ul class="help&#45;&#45;slides-items">-->
+
+<!--                <li>-->
+
+<!--                    <form th:object="${users[i]}" th:if="${toEditId != null} and ${users[i].id == toEditId}" th:action="@{/admin/editInstitution/{id}(id=${users[i].id})}" >-->
+<!--                        <input type="hidden" th:field="*{id}" name="id"/>-->
+<!--                        <div class="col">-->
+
+<!--                            <div class="subtitle" ><input type="text" th:field="*{name}" name="name"/></div>-->
+<!--                            <div class="subtitle" ><input type="text" th:field="*{surname}" name="surname"/></div>-->
+<!--                            <div class="subtitle"><input type="text" th:field="*{email}" name="email"/></div>-->
+<!--                            <button class="btn" type="submit" th:text="Zapisz"></button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                    <div class="col" th:if="${toEditId == null} or ${users[i].id != toEditId}">-->
+<!--                        <div class="title" th:text="${users[i].name}"></div>-->
+<!--                        <div class="subtitle" th:text="${users[i].surname}"></div>-->
+<!--                        <div class="subtitle" th:text="${users[i].email}"></div>-->
+<!--                        <a class="btn" type="button" th:href="@{/admin/users(toEdit=${users[i].id})}" th:text="Edytuj"></a>-->
+<!--                        <a class="btn" type="button" th:href="@{/admin/deleteUser/{id}(id=${users[i].id})}" th:text="Usuń"></a>-->
+<!--                    </div>-->
+
+<!--                    <div class="col" >-->
+<!--                        <div class="title" th:if="${i<users.size()-1}" th:text="${users[i+1].name}"></div>-->
+<!--                        <div class="subtitle" th:if="${i<users.size()-1}"  th:text="${users[i+1].surname}"></div>-->
+<!--                        <div class="subtitle" th:if="${i<users.size()-1}"  th:text="${users[i+1].email}"></div>-->
+<!--                        <div>  <a class="btn " th:if="${i<users.size()-1}" th:href="@{/admin/editUser/{id}(id=${users[i+1].id})}" th:text="Edytuj"></a>-->
+<!--                            <a class="btn " th:if="${i<users.size()-1}" th:href="@{/admin/deleteUser/{id}(id=${users[i+1].id})}" th:text="Usuń"></a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </li>-->
+
+<!--            </ul>-->
+<!--        </th:block>-->
+
+<!--    </div>-->
+
+<!--</section>-->
 <footer th:include="footer"></footer>
 </body>
 </html>

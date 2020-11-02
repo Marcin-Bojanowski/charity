@@ -57,10 +57,24 @@ public UserDTO map(User user){
                 .to(UserDTO.class)
                 .omitInSource(User::getRoles)
                 .omitInSource(User::getPassword)
+                .omitInSource(User::getEnabled)
                 .mapper();
 
         return mapper.map(user);
 }
+
+    public EditUserDTO mapLoggedUser(User user){
+        Mapper<User,EditUserDTO> mapper=Mapping
+                .from(User.class)
+                .to(EditUserDTO.class)
+                .omitInSource(User::getRoles)
+                .omitInSource(User::getPassword)
+                .omitInSource(User::getEnabled)
+                .omitInSource(User::getLocked)
+                .mapper();
+
+        return mapper.map(user);
+    }
 
     public InstitutionDTO map(Institution institution) {
         Mapper<Institution, InstitutionDTO> mapper = Mapping

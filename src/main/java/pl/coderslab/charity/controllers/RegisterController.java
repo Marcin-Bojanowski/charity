@@ -7,10 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.dtos.user.NewUserDTO;
+import pl.coderslab.charity.exceptions.ElementNotFoundException;
+import pl.coderslab.charity.exceptions.TokenExpiredException;
 import pl.coderslab.charity.services.RegistrationService;
+import pl.coderslab.charity.services.VerificationTokenService;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -25,11 +29,11 @@ import java.util.Set;
 public class RegisterController {
 
     private final RegistrationService registrationService;
-
+private final VerificationTokenService verificationTokenService;
 
     @GetMapping
     public String registrationForm(Model model){
-        model.addAttribute("userDTO",new NewUserDTO());
+        model.addAttribute("newUserDTO",new NewUserDTO());
         return "register";
     }
 
@@ -50,6 +54,18 @@ public class RegisterController {
             }
             return "register";
         }
-        return "login";
+        return "redirect:/login";
+    }
+
+    @GetMapping("/confirmRegistration/{token}")
+    public String activateAccount(@PathVariable String token, Model model){
+        try {
+            verificationTokenService.activateAccount(token);
+        } catch (ElementNotFoundException | TokenExpiredException exception){
+            model.addAttribute("error",exception.getMessage());
+            return "confirmFailure";
+        }
+
+        return "redirect:/login";
     }
 }

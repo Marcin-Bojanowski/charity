@@ -25,8 +25,8 @@
                     <div class="col">
                         <div class="title" th:text="${institutions[i].name}"></div>
                         <div class="subtitle" th:text="${institutions[i].description}"></div>
-                        <a class="btn" type="button" th:href="@{/WEB-INF/views/admin/editInstitution/{id}(id=${institutions[i].id})}" th:text="Edytuj"></a>
-                        <a class="btn" type="button" th:href="@{/WEB-INF/views/admin/deleteInstitution/{id}(id=${institutions[i].id})}" th:text="Usuń"></a>
+                        <a class="btn" type="button" th:href="@{/admin/editInstitution/{id}(id=${institutions[i].id})}" th:text="Edytuj"></a>
+                        <a class="btn" type="button" th:href="@{/admin/deleteInstitution/{id}(id=${institutions[i].id})}" th:text="Usuń"></a>
                     </div>
 
                     <div class="col" >

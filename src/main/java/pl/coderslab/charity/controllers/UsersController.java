@@ -27,36 +27,39 @@ public class UsersController {
 
     @ModelAttribute("users")
     public List<UserDTO> getUsers() {
-        return   userService.getAllUsersDTO();
+        return userService.getAllUsersDTO();
     }
 
     @GetMapping("/users")
-    public String getAllUsers(){
+    public String getAllUsers(@RequestParam(required = false) Long toEdit, Model model) {
+        if (toEdit!=null){
+            model.addAttribute("userToEdit", userService.getUserToEdit(toEdit));
+        }
+
         return "user/users";
     }
 
 
-
     @GetMapping("/editUser/{id}")
-    public String editAdmin(@PathVariable Long id, Model model){
-        model.addAttribute("user",userService.getUserToEdit(id));
+    public String editAdmin(@PathVariable Long id, Model model) {
+        model.addAttribute("user", userService.getUserToEdit(id));
         return "user/editUser";
     }
 
     @PostMapping("/editUser")
-    public String updateAdmin(@ModelAttribute UserDTO userDTO, BindingResult result){
-        if (result.hasErrors()){
+    public String updateAdmin(@ModelAttribute UserDTO userDTO, BindingResult result) {
+        if (result.hasErrors()) {
             return "user/editUser";
         }
         try {
             registrationService.update(userDTO);
-        } catch (ConstraintViolationException exception){
+        } catch (ConstraintViolationException exception) {
             Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
             for (ConstraintViolation<?> violation : violations) {
                 String message = violation.getMessage();
-                Path propertyPath =violation.getPropertyPath();
+                Path propertyPath = violation.getPropertyPath();
                 String property = Iterables.getLast(propertyPath).toString();
-                result.rejectValue(property,message);
+                result.rejectValue(property, message);
             }
             return "user/editUser";
         }
@@ -64,7 +67,7 @@ public class UsersController {
     }
 
     @GetMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable Long id){
+    public String deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return "redirect:/admin/users";
     }
