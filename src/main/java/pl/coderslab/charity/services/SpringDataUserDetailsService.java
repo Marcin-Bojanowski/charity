@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-
 public class SpringDataUserDetailsService implements UserDetailsService {
 
     private UserService userService;
