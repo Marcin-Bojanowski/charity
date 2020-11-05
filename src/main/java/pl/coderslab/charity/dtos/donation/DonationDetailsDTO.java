@@ -1,28 +1,22 @@
-package pl.coderslab.charity.entities;
+package pl.coderslab.charity.dtos.donation;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-import pl.coderslab.charity.entities.base.BaseEntity;
+import pl.coderslab.charity.entities.Category;
+import pl.coderslab.charity.entities.Institution;
 
-import javax.persistence.*;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
-@Table(name = "donation")
-
-public class Donation extends BaseEntity {
-
+public class DonationDetailsDTO {
     private Integer quantity;
-    @ManyToMany
-    private List<Category> categories = new ArrayList<>();
-    @ManyToOne
-    private Institution institution;
+    private List<String> categoriesNames;
+    private String institutionName;
     private String street;
     private String city;
     private String zipCode;
@@ -34,11 +28,4 @@ public class Donation extends BaseEntity {
     private LocalDate donePickUpDate;
     private LocalTime donePickUpTime;
     private LocalDateTime createDate;
-
-    @PrePersist
-    public void setCreateDate() {
-        this.createDate = LocalDateTime.now();
-    }
-
-
 }

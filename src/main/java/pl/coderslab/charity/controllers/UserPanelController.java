@@ -24,7 +24,7 @@ import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/userPanel")
+@RequestMapping("/user")
 public class UserPanelController {
 
     private final UserService userService;
@@ -58,7 +58,7 @@ public class UserPanelController {
             }
             return "user/editUser";
         }
-        return "redirect:/userPanel";
+        return "redirect:/user";
     }
 
     @GetMapping("/changePassword")
@@ -75,10 +75,13 @@ public class UserPanelController {
         try {
             registrationService.changePassword(password);
         } catch (InvalidOldPasswordException exception){
-            exception.printStackTrace();
+            String message = exception.getMessage();
+//            Path propertyPath = exception.;
+//            String property = Iterables.getLast(propertyPath).toString();
+            result.rejectValue("oldPassword", message);
             return "user/changePassword";
         }
 
-        return "redirect:/userPanel";
+        return "redirect:/user";
     }
 }

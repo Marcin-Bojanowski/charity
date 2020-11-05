@@ -57,9 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .failureUrl("/login-error")
 //                .failureHandler(authenticationFailureHandler())
-                .successHandler(authenticationSuccessHandler);
-
-//                .and().logout().logoutSuccessUrl("/")
+                .successHandler(authenticationSuccessHandler)
+                .and().logout().logoutSuccessUrl("/");
 //                .and().exceptionHandling().accessDeniedPage("/403");
     }
 

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <!--    <meta charset="UTF-8">-->
+
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
-    <!--    <script src="../../resources/js/js.js"></script>-->
-    <link rel="stylesheet" th:href="@{../../resources/css/style.css}"/>
+        <script src="../../resources/js/js.js"></script>
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
 
 </head>
 <body>
@@ -25,10 +25,16 @@
                 <li class="logged-user">
                     <th:block sec:authentication="principal.user.name"></th:block>
                     <ul class="dropdown">
-                        <li><a th:href="@{/userPanel}">Profil</a></li>
-                        <li><a th:href="@{/userPanel/editUser}">Edycja konta</a></li>
-                        <li><a href="#">Moje zbiórki</a></li>
-                        <li><a href="#">Wyloguj</a></li>
+                        <li><a th:href="@{/user}">Profil</a></li>
+                        <li><a th:href="@{/user/editUser}">Edycja konta</a></li>
+                        <li><a th:href="@{/user/donation}">Dodaj zbiórkę</a></li>
+                        <li><a th:href="@{/user/donation/userDonations}">Moje zbiórki</a></li>
+                        <li><form th:action="@{/logout}" method="post">
+                         <a>   <input  th:type="submit" th:value="Wyloguj"></a>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        </form></li>
+
+
                     </ul>
                 </li>
             </th:block>
@@ -41,7 +47,10 @@
                         <li><a th:href="@{/admin/admins}">Administratorzy</a></li>
                         <li><a th:href="@{/admin/addAdmin}">Dodaj administratora</a></li>
                         <li><a th:href="@{/admin/users}">Użytkownicy</a></li>
-<!--                        <li><a href="#">Wyloguj</a></li>-->
+                    <li><form th:action="@{/logout}" method="post">
+                         <a>   <input class="bd-tw-button button" th:type="submit" th:value="Wyloguj"></a>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        </form></li>
                     </ul>
                 </li>
             </th:block>
@@ -50,7 +59,7 @@
         </ul>
 
         <ul>
-            <li><a th:href="@{/user/donation}" class="btn btn--without-border active" th:text="#{start.message}"></a>
+            <li><a th:href="@{/}" class="btn btn--without-border active" th:text="#{start.message}"></a>
             </li>
             <li><a href="#" class="btn btn--without-border" th:text="#{about.idea.message}"></a></li>
             <li><a href="#" class="btn btn--without-border" th:text="#{about.us.message}"></a></li>

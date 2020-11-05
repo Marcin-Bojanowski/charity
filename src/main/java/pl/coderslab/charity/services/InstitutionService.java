@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.dtos.institution.InstitutionDTO;
 import pl.coderslab.charity.dtos.institution.NewInstitutionDTO;
+import pl.coderslab.charity.entities.Donation;
 import pl.coderslab.charity.entities.Institution;
 import pl.coderslab.charity.repositories.InstitutionRepository;
 import pl.coderslab.charity.utilities.CustomMapper;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class InstitutionService {
     private final InstitutionRepository institutionRepository;
     private CustomMapper customMapper;
-
+private final DonationService donationService;
 
     @Autowired
     private void setCustomMapper(CustomMapper customMapper) {
@@ -59,6 +60,11 @@ public class InstitutionService {
 
     public void delete(Long id) {
         Institution institution=institutionRepository.getOne(id);
+        List<Donation> donations=donationService.getAllByInstitution(institution);
+        log.info(donations.toString());
         institutionRepository.delete(institution);
+        donations.forEach(donation -> donation.setInstitution(null));
+        log.info(donations.toString());
+        donations.forEach(donationService::update);
     }
 }

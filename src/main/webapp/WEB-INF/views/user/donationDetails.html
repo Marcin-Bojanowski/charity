@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <script src="../../../resources/js/js.js"></script>
+<!--    <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+</head>
+<body>
+<header th:include="header"></header>
+<div class="container">
+
+
+    <table class="table" style="width:1200px; font-size: large">
+
+            <tr>
+                <td>Kategorie</td>
+                <td>
+                    <th:block th:each="category: ${donation.categoriesNames}">
+                        <p th:text="${category}"></p><br>
+                    </th:block>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Instytucja</td>
+                <td th:text="${donation.institutionName}"></td>
+            </tr>
+            <tr>
+                <td>Ilość worków</td>
+                <td th:text="${donation.quantity}"></td>
+            </tr>
+            <tr>
+                <td>Data utworzenia</td>
+                <td th:text="${donation.createDate}"></td>
+            </tr>
+            <tr>
+                <td>
+                    Adres
+                </td>
+                <td>
+                    <p th:text="${donation.street}"></p>
+                    <p th:text="${donation.zipCode}"></p>
+                    <p th:text="${donation.city}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td >Planowany dzień odbioru</td>
+                <td th:text="${donation.pickUpDate}"></td>
+            </tr>
+            <tr>
+                <td >Planowana gdzina odbioru</td>
+                <td th:text="${donation.pickUpTime}"></td>
+            </tr>
+            <th:block th:if="${donation.isPickedUp}==false">
+               <tr>
+                   <td>Status</td>
+                   <td>Nie odebrane</td>
+               </tr>
+                <tr>
+                    <td>Data odbioru</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Godzina odbioru</td>
+                    <td>-</td>
+                </tr>
+            </th:block>
+        <th:block th:if="${donation.isPickedUp}==true">
+            <tr>
+                <td>Status</td>
+                <td>Odebrane</td>
+            </tr>
+            <tr>
+                <td>Data odbioru</td>
+                <td th:text="${donation.donePickUpDate}"></td>
+            </tr>
+            <tr>
+                <td>Godzina odbioru</td>
+                <td th:text="${donation.donePickUpTime}"></td>
+            </tr>
+        </th:block>
+
+    </table>
+    <th:block th:if="${donation.isPickedUp}==false">
+        <h1 class="title">Zapisz odbiór</h1>
+   <form th:object="${pickUpDetails}" th:method="post" th:action="@{/user/donation/pickUp}">
+       <div class="form-group">
+
+           <input th:field="*{donePickUpDate}" type="date" name="donePickUpDate">
+       </div>
+       <div class="form-group">
+           <input th:field="*{donePickUpTime}" type="time" name="donePickUpTime">
+       </div>
+       <div class="form-group form-group--buttons">
+           <input th:field="*{donationId}" type="hidden" name="donationId" th:value="*{donationId}">
+           <button class="btn" type="submit">Edytuj</button>
+       </div>
+   </form>
+    </th:block>
+</div>
+
+<footer th:include="footer"></footer>
+</body>
+</html>

@@ -2,10 +2,12 @@ package pl.coderslab.charity.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.dtos.user.EditUserDTO;
 import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.User;
+import pl.coderslab.charity.entities.base.CurrentUser;
 import pl.coderslab.charity.repositories.UserRepository;
 import pl.coderslab.charity.utilities.CustomMapper;
 import pl.coderslab.charity.utilities.LoggedUser;
@@ -47,6 +49,8 @@ private final LoggedUser loggedUser;
     }
 
     public EditUserDTO getUserToEdit() {
+        CurrentUser currentUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info(currentUser.toString());
         return customMapper.mapLoggedUser(loggedUser.getLoggedUser());
     }
 

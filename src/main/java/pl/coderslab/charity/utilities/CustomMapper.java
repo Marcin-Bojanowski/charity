@@ -10,8 +10,11 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import pl.coderslab.charity.dtos.category.CategoryDTO;
+import pl.coderslab.charity.dtos.donation.DonationDTO;
+import pl.coderslab.charity.dtos.donation.DonationDetailsDTO;
 import pl.coderslab.charity.dtos.donation.NewDonationDTO;
 import pl.coderslab.charity.dtos.institution.InstitutionDTO;
 
@@ -26,6 +29,10 @@ import pl.coderslab.charity.entities.User;
 import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.InstitutionService;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -50,9 +57,8 @@ public class CustomMapper {
     }
 
 
-
-public UserDTO map(User user){
-        Mapper<User,UserDTO> mapper=Mapping
+    public UserDTO map(User user) {
+        Mapper<User, UserDTO> mapper = Mapping
                 .from(User.class)
                 .to(UserDTO.class)
                 .omitInSource(User::getRoles)
@@ -61,10 +67,10 @@ public UserDTO map(User user){
                 .mapper();
 
         return mapper.map(user);
-}
+    }
 
-    public EditUserDTO mapLoggedUser(User user){
-        Mapper<User,EditUserDTO> mapper=Mapping
+    public EditUserDTO mapLoggedUser(User user) {
+        Mapper<User, EditUserDTO> mapper = Mapping
                 .from(User.class)
                 .to(EditUserDTO.class)
                 .omitInSource(User::getRoles)
@@ -93,8 +99,8 @@ public UserDTO map(User user){
         return mapper.map(category);
     }
 
-    public Institution map(NewInstitutionDTO newInstitutionDTO){
-        Mapper<NewInstitutionDTO, Institution> mapper=Mapping
+    public Institution map(NewInstitutionDTO newInstitutionDTO) {
+        Mapper<NewInstitutionDTO, Institution> mapper = Mapping
                 .from(NewInstitutionDTO.class)
                 .to(Institution.class)
                 .omitInDestination(Institution::getId)
@@ -103,13 +109,58 @@ public UserDTO map(User user){
         return mapper.map(newInstitutionDTO);
     }
 
+
+
+    public DonationDTO mapToDonationDTO(Donation donation) {
+        Mapper<Donation, DonationDTO> mapper = Mapping
+                .from(Donation.class)
+                .to(DonationDTO.class)
+                .omitInSource(Donation::getCity)
+                .omitInSource(Donation::getPhoneNumber)
+                .omitInSource(Donation::getStreet)
+                .omitInSource(Donation::getZipCode)
+                .omitInSource(Donation::getPickUpComment)
+                .omitInSource(Donation::getInstitution)
+                .omitInSource(Donation::getCategories)
+                .omitInSource(Donation::getUserId)
+                .omitInSource(Donation::getPickUpDate)
+                .omitInSource(Donation::getPickUpTime)
+                .set(DonationDTO::getCategoriesNames)
+                .with(donation.getCategories().stream().map(Category::getName).collect(Collectors.toList()))
+               .set(DonationDTO::getInstitutionName)
+                .with(donation.getInstitution().getName())
+                .mapper();
+        return mapper.map(donation);
+    }
+
+    public DonationDetailsDTO mapToDonationDetails(Donation donation){
+        Mapper<Donation, DonationDetailsDTO> mapper = Mapping
+                .from(Donation.class)
+                .to(DonationDetailsDTO.class)
+                .omitInSource(Donation::getId)
+                .omitInSource(Donation::getUserId)
+                .omitInSource(Donation::getCategories)
+                .omitInSource(Donation::getInstitution)
+                .set(DonationDetailsDTO::getCategoriesNames)
+                .with(donation.getCategories().stream().map(Category::getName).collect(Collectors.toList()))
+                .set(DonationDetailsDTO::getInstitutionName)
+                .with(donation.getInstitution().getName())
+                .mapper();
+        return mapper.map(donation);
+    }
+
     public Donation map(NewDonationDTO newDonationDTO) {
         Mapper<NewDonationDTO, Donation> mapper = Mapping
                 .from(NewDonationDTO.class)
                 .to(Donation.class)
                 .omitInDestination(Donation::getId)
+                .omitInDestination(Donation::getUserId)
+                .omitInDestination(Donation::getIsPickedUp)
+                .omitInDestination(Donation::getDonePickUpDate)
+                .omitInDestination(Donation::getDonePickUpTime)
                 .omitInSource(NewDonationDTO::getInstitutionId)
                 .omitInSource(NewDonationDTO::getCategoriesId)
+                .omitInDestination(Donation::getCreateDate)
                 .set(Donation::getInstitution)
                 .with(institutionService.getById(newDonationDTO.getInstitutionId()))
                 .set(Donation::getCategories)

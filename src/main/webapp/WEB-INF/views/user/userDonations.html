@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <script src="../../../resources/js/js.js"></script>
+
+
+</head>
+<body>
+<header th:include="header"></header>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+<div class="container">
+
+
+    <table class="table" style="width:1200px; font-size: large">
+        <thead>
+        <tr>
+
+
+            <th>Kategoria</th>
+            <th>Instytucja</th>
+            <th>Ilość worków</th>
+            <th>Data utworzenia</th>
+            <th>Status</th>
+            <th>Data odbioru</th>
+            <th>Godzina odbioru</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <th:block th:each="donation: ${donations}">
+
+            <div class="col" >
+                </tr>
+
+                    <td>
+                        <th:block  th:each="category: ${donation.categoriesNames}">
+                            <p th:text="${category}"></p><br>
+                        </th:block>
+
+                    </td>
+                <td th:text="${donation.institutionName}"></td>
+                <td th:text="${donation.quantity}"></td>
+                <td th:text="${donation.createDate}"></td>
+                <td th:if="${donation.isPickedUp}==false">Czeka na odbiór</td>
+                <td th:if="${donation.isPickedUp}==true">Odebrany</td>
+                <td th:text="${donation.donePickUpDate}"></td>
+                <td th:text="${donation.donePickUpTime}"></td>
+                <td>
+                    <a class="btn--highlighted" type="button" th:href="@{/user/donation/donationDetails/{id}(id=${donation.id})}"
+                       th:text="Szczegóły"></a>
+
+                </td>
+                </tr>
+            </div>
+
+
+
+
+        </th:block>
+    </table>
+</div>
+
+<footer th:include="footer"></footer>
+</body>
+</html>

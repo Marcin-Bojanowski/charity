@@ -36,12 +36,12 @@
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-        <form th:id="form" th:object="${donation}"  method="post">
+        <form th:id="form" th:object="${donation}"  method="post"  th:action="@{/user/donation}">
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
 <th:block  th:each="category: ${categories}">
-<!--    th:action="form-confirmation.html"-->
+
 <!--    form-group&#45;&#45;checkbox-->
                 <div class="form-group form-group--checkbox" >
                     <label>

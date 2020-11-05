@@ -12,7 +12,7 @@
 <header th:include="header"></header>
 <section class="login-page">
     <h2>Nowa fundacja</h2>
-    <form th:object="${newInstitution}" th:method="post" th:action="@{/WEB-INF/views/admin/addInstitution}" >
+    <form th:object="${newInstitution}" th:method="post" th:action="@{/admin/addInstitution}" >
         <div class="form-group">
             <input th:field="*{name}" type="text" name="name" placeholder="Name" />
             <p th:errors="*{name}"></p>

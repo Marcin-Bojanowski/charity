@@ -3,12 +3,12 @@ package pl.coderslab.charity.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.category.CategoryDTO;
+import pl.coderslab.charity.dtos.donation.DonationDTO;
+import pl.coderslab.charity.dtos.donation.DonationDetailsDTO;
 import pl.coderslab.charity.dtos.donation.NewDonationDTO;
+import pl.coderslab.charity.dtos.donation.PickUpDetailsDTO;
 import pl.coderslab.charity.dtos.institution.InstitutionDTO;
 import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.DonationService;
@@ -46,5 +46,29 @@ public class DonationController {
 
         donationService.save(newDonationDTO);
         return "form-confirmation";
+    }
+
+    @GetMapping("/userDonations")
+    public String getUserDonations(Model model){
+        model.addAttribute("donations",donationService.getUserDonations());
+        return "user/userDonations";
+    }
+
+    @GetMapping("/donationDetails/{id}")
+    public String getDonationDetails(@PathVariable Long id,Model model){
+        DonationDetailsDTO donationDetailsDTO=donationService.getDonationDetails(id);
+        model.addAttribute("donation",donationDetailsDTO);
+        if (!donationDetailsDTO.getIsPickedUp()){
+            PickUpDetailsDTO pickUpDetailsDTO=new PickUpDetailsDTO();
+            pickUpDetailsDTO.setDonationId(id);
+            model.addAttribute("pickUpDetails",pickUpDetailsDTO);
+        }
+        return "user/donationDetails";
+    }
+
+    @PostMapping("/pickUp")
+    public String setPickUp(@ModelAttribute PickUpDetailsDTO pickUpDetailsDTO){
+        donationService.setPickUp(pickUpDetailsDTO);
+        return "redirect:donationDetails/"+pickUpDetailsDTO.getDonationId().toString();
     }
 }

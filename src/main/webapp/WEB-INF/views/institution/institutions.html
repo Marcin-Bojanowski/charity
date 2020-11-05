@@ -32,8 +32,8 @@
                     <div class="col" >
                         <div class="title" th:if="${i<institutions.size()-1}" th:text="${institutions[i+1].name}"></div>
                         <div class="subtitle" th:if="${i<institutions.size()-1}"  th:text="${institutions[i+1].description}"></div>
-                      <div>  <a class="btn " th:if="${i<institutions.size()-1}" th:href="@{/WEB-INF/views/admin/editInstitution/{id}(id=${institutions[i+1].id})}" th:text="Edytuj"></a>
-                      <a class="btn " th:if="${i<institutions.size()-1}" th:href="@{/WEB-INF/views/admin/deleteInstitution/{id}(id=${institutions[i+1].id})}" th:text="Usuń"></a>
+                      <div>  <a class="btn " th:if="${i<institutions.size()-1}" th:href="@{/admin/editInstitution/{id}(id=${institutions[i+1].id})}" th:text="Edytuj"></a>
+                      <a class="btn " th:if="${i<institutions.size()-1}" th:href="@{/admin/deleteInstitution/{id}(id=${institutions[i+1].id})}" th:text="Usuń"></a>
                         </div>
                     </div>
                 </li>

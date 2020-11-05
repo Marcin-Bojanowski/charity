@@ -1,14 +1,25 @@
 package pl.coderslab.charity.entities.base;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import pl.coderslab.charity.utilities.LoggedUser;
+
+import javax.persistence.*;
 
 @MappedSuperclass
-public class BaseEntity {
+@Data
+
+public abstract class BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private Long userId;
+
+    @PrePersist
+    public void setUserId() {
+        LoggedUser loggedUser=new LoggedUser();
+        this.userId = loggedUser.getLoggedUserId();
+    }
 }

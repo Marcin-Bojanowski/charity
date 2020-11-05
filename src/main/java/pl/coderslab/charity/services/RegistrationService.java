@@ -2,6 +2,10 @@ package pl.coderslab.charity.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +17,7 @@ import pl.coderslab.charity.dtos.user.NewUserDTO;
 import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.User;
 import pl.coderslab.charity.entities.VerificationToken;
+import pl.coderslab.charity.entities.base.CurrentUser;
 import pl.coderslab.charity.exceptions.InvalidOldPasswordException;
 import pl.coderslab.charity.repositories.UserRepository;
 import pl.coderslab.charity.utilities.LoggedUser;
@@ -36,6 +41,7 @@ public class RegistrationService {
     private final VerificationTokenService verificationTokenService;
     private final TokenGenerator tokenGenerator;
     private final LoggedUser loggedUser;
+
 
     @Validated(Registration.class)
     public void registerUser(@Valid NewUserDTO newUserDTO) {
@@ -89,6 +95,8 @@ public class RegistrationService {
         user.setEmail(userDTO.getEmail());
         userRepository.save(user);
     }
+
+
 
     public void changePassword(PasswordDTO password) {
         User user = loggedUser.getLoggedUser();

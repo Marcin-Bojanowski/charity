@@ -17,4 +17,9 @@ public class LoggedUser {
         CurrentUser currentUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return currentUser.getUser();
     }
+
+    public CurrentUser  getCurrentUser(){
+        CurrentUser currentUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return currentUser;
+    }
 }
