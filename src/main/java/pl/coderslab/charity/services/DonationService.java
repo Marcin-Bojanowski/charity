@@ -31,7 +31,12 @@ public class DonationService {
 
     private final DonationRepository donationRepository;
     private CustomMapper customMapper;
-private final LoggedUser loggedUser;
+private LoggedUser loggedUser;
+
+    @Autowired
+    private void setLoggedUser(LoggedUser loggedUser) {
+        this.loggedUser = loggedUser;
+    }
 
     @Autowired
     private void setCustomMapper(CustomMapper customMapper) {

@@ -7,6 +7,11 @@
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
     <script src="../../resources/js/js.js"></script>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <header th:include="header"></header>
@@ -36,13 +41,14 @@
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-        <form th:id="form" th:object="${donation}"  method="post"  th:action="@{/user/donation}">
+        <form th:id="form" th:object="${newDonationDTO}"  method="post"  th:action="@{/user/donation}">
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
+                <h3 th:class="err" th:if="${#fields.hasErrors()}">Formularz zawiera błędy</h3>
 <th:block  th:each="category: ${categories}">
 
-<!--    form-group&#45;&#45;checkbox-->
+
                 <div class="form-group form-group--checkbox" >
                     <label>
                         <input th:id="categories" th:field="*{categoriesId}" th:type="checkbox" th:name="categories" th:value="${category.id}" />
@@ -52,8 +58,11 @@
                     </label>
                 </div>
 </th:block>
-
+                <div class="form-group form-group--inline">
+                    <label th:class="err" th:errors="*{categoriesId}"></label><br>
+                </div>
                 <div class="form-group form-group--buttons">
+
                     <button type="button" class="btn next-step">Dalej</button>
                 </div>
             </div>
@@ -66,6 +75,7 @@
                     <label>
                         Liczba 60l worków:
                         <input th:id="bags" th:field="*{quantity}" th:type="number" th:name="bags" th:step="1" th:min="1"/>
+                        <p th:class="err" th:errors="*{quantity}"></p>
                     </label>
                 </div>
 
@@ -93,10 +103,16 @@
 
                   </div>
                 </span>
+
                     </label>
 
                 </div>
                 </th:block>
+
+                <div class="form-group form-group--inline">
+                    <label th:class="err" th:errors="*{institutionId}"></label>
+                </div>
+
                 <div class="form-group form-group--buttons">
                     <button type="button" class="btn prev-step">Wstecz</button>
                     <button type="button" class="btn next-step">Dalej</button>
@@ -112,22 +128,28 @@
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
                             <label> Ulica <input th:id="address" th:type="text" th:name="address" th:field="*{street}"/> </label>
+                            <label th:class="err" th:errors="*{street}"></label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label> Miasto <input th:id="city" th:type="text" th:name="city" th:field="*{city}"/> </label>
+                            <label th:class="err" th:errors="*{city}"></label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Kod pocztowy <input th:id="postCode" th:type="text" th:name="postcode" th:field="*{zipCode}"/>
+
                             </label>
+                            <label th:class="err" th:errors="*{zipCode}"></label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Numer telefonu <input th:id="phone" th:type="tel" th:name="phone" th:field="*{phoneNumber}"/>
+
                             </label>
+                            <label th:class="err" th:errors="*{phoneNumber}"></label>
                         </div>
                     </div>
 
@@ -135,10 +157,12 @@
                         <h4>Termin odbioru</h4>
                         <div class="form-group form-group--inline">
                             <label> Data <input th:id="date" th:type="date" th:name="data" th:field="*{pickUpDate}"/> </label>
+                            <label th:class="err" th:errors="*{pickUpDate}"></label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label> Godzina <input th:id="time" th:type="time" th:name="time" th:field="*{pickUpTime}"/> </label>
+                            <label th:class="err" th:errors="*{pickUpTime}"></label>
                         </div>
 
                         <div class="form-group form-group--inline">

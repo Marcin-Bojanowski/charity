@@ -2,17 +2,15 @@ package pl.coderslab.charity.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 import pl.coderslab.charity.dtos.password.PasswordDTO;
-import pl.coderslab.charity.dtos.user.EditUserDTO;
+import pl.coderslab.charity.dtos.user.ChangeEmailDTO;
+import pl.coderslab.charity.dtos.user.EditUserDetailsDTO;
 import pl.coderslab.charity.dtos.user.NewUserDTO;
 import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.User;
@@ -24,6 +22,7 @@ import pl.coderslab.charity.utilities.LoggedUser;
 import pl.coderslab.charity.utilities.email.EmailServiceImpl;
 import pl.coderslab.charity.utilities.email.TokenGenerator;
 import pl.coderslab.charity.validation.groups.Registration;
+import pl.coderslab.charity.validation.groups.Update;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
@@ -41,7 +40,7 @@ public class RegistrationService {
     private final VerificationTokenService verificationTokenService;
     private final TokenGenerator tokenGenerator;
     private final LoggedUser loggedUser;
-
+    private final SpringDataUserDetailsService springDataUserDetailsService;
 
     @Validated(Registration.class)
     public void registerUser(@Valid NewUserDTO newUserDTO) {
@@ -88,14 +87,17 @@ public class RegistrationService {
         userRepository.save(user);
     }
 
-    public void update(EditUserDTO userDTO) {
+    public void update(EditUserDetailsDTO userDTO) {
         User user = userRepository.getOne(userDTO.getId());
         user.setSurname(userDTO.getSurname());
         user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
         userRepository.save(user);
-    }
+        CurrentUser currentUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CurrentUser currentUser1 = (CurrentUser) springDataUserDetailsService.loadUserByUsername(currentUser.getUsername());
 
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(currentUser1, currentUser.getPassword(), currentUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
 
 
     public void changePassword(PasswordDTO password) {
@@ -103,7 +105,27 @@ public class RegistrationService {
         if (!passwordEncoder.matches(password.getOldPassword(), user.getPassword())) {
             throw new InvalidOldPasswordException("invalid.old.password.message");
         }
-        user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(password.getPassword()));
         userRepository.save(user);
+    }
+
+    @Validated(Update.class)
+    public void changeEmail(@Valid ChangeEmailDTO emailDTO) {
+        User user=loggedUser.getLoggedUser();
+        user.setEmail(emailDTO.getNewEmail());
+        user.setEnabled(false);
+        User savedUser = userRepository.save(user);
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setUser(savedUser);
+        verificationToken.setToken(tokenGenerator.generateNewToken());
+        verificationTokenService.save(verificationToken);
+
+        try {
+            emailService.sendSimpleEmail(savedUser.getEmail(), savedUser.getName(), verificationToken.getToken());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        SecurityContextHolder.clearContext();
     }
 }

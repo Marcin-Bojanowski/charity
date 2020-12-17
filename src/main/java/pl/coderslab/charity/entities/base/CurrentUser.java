@@ -1,11 +1,14 @@
 package pl.coderslab.charity.entities.base;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
-@Data
+@Getter
+@Setter
 public class CurrentUser extends User {
     private final pl.coderslab.charity.entities.User user;
 

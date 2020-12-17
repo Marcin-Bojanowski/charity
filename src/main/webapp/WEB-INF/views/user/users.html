@@ -33,9 +33,13 @@
                 <input type="hidden" th:field="*{id}" name="id"/>
                 <tr>
 
-                    <td><input type="text" th:field="*{name}" name="name"/></td>
-                    <td><input type="text" th:field="*{surname}" name="surname"/></td>
-                    <td><input type="text" th:field="*{email}" name="email"/></td>
+                    <td><input type="text" th:field="*{name}" name="name"/><br>
+                        <label th:class="err" th:errors="*{name}"></label>
+                    </td>
+                    <td><input type="text" th:field="*{surname}" name="surname"/>
+                        <p th:class="err" th:errors="*{surname}"></p></td>
+                    <td><input type="text" th:field="*{email}" name="email"/>
+                        <p th:class="err" th:errors="*{email}"></p></td>
                     <td>Zabkolowany
                         <input type="radio" th:field="*{locked}" th:value="false">
 

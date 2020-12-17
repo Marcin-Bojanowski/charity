@@ -2,6 +2,8 @@ package pl.coderslab.charity.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
@@ -20,7 +22,9 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class LoginController {
 
-    private final String LOCKED_MESSAGE="user.locked.message";
+    private final String LOCKED_MESSAGE="auth.message.locked";
+    private final String DISABLED_MESSAGE="auth.message.disabled";
+    private final String BAD_CREDENTIALS_MESSAGE="auth.message.bad.credentials";
 
     @GetMapping("/login")
     public String login(){
@@ -32,7 +36,7 @@ public class LoginController {
     @GetMapping("/login-error")
     public String loginError(HttpServletRequest request, Model model, Error error){
         HttpSession session = request.getSession(false);
-        String errorMessage = null;
+        String errorMessage = BAD_CREDENTIALS_MESSAGE;
         if (session != null) {
             AuthenticationException ex = (AuthenticationException) session
                     .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
@@ -40,6 +44,8 @@ public class LoginController {
 
                 if (ex instanceof LockedException){
                     errorMessage=LOCKED_MESSAGE;
+                } else if (ex instanceof DisabledException){
+                    errorMessage=DISABLED_MESSAGE;
                 }
             }
         }

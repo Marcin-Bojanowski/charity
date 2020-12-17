@@ -32,7 +32,7 @@ public class InstitutionsController {
 
     @GetMapping("/addInstitution")
     public String addInstitution (Model model){
-        model.addAttribute("newInstitution",new NewInstitutionDTO());
+        model.addAttribute("newInstitutionDTO",new NewInstitutionDTO());
         return "institution/institutionForm";
     }
 
@@ -47,13 +47,16 @@ public class InstitutionsController {
 
     @GetMapping("/editInstitution/{id}")
     public String editInstitution(@PathVariable Long id, Model model){
-        model.addAttribute("institution",institutionService.getById(id));
+        model.addAttribute("institutionDTO",institutionService.getById(id));
         return "institution/editInstitutionForm";
 
     }
 
     @PostMapping("/editInstitution")
-    public String updateInstitution(@Valid InstitutionDTO institutionDTO){
+    public String updateInstitution(@Valid InstitutionDTO institutionDTO, BindingResult result){
+        if (result.hasErrors()){
+            return "institution/editInstitutionForm";
+        }
         institutionService.update(institutionDTO);
         return "redirect:/admin/institutions";
     }

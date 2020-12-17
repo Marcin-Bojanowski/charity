@@ -40,16 +40,17 @@ public class UsersController {
     }
 
 
-    @GetMapping("/editUser/{id}")
-    public String editAdmin(@PathVariable Long id, Model model) {
-        model.addAttribute("user", userService.getUserToEdit(id));
-        return "user/editUser";
-    }
+//    @GetMapping("/editUser/{id}")
+//    public String editAdmin(@PathVariable Long id, Model model) {
+//        model.addAttribute("user", userService.getUserToEdit(id));
+//        return "user/editUser";
+//    }
 
     @PostMapping("/editUser")
-    public String updateAdmin(@ModelAttribute UserDTO userDTO, BindingResult result) {
+    public String updateAdmin(@Valid @ModelAttribute("userToEdit") UserDTO userDTO, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "user/editUser";
+
+            return "user/users";
         }
         try {
             registrationService.update(userDTO);

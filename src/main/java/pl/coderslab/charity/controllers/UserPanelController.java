@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.dtos.password.PasswordDTO;
-import pl.coderslab.charity.dtos.user.EditUserDTO;
-import pl.coderslab.charity.dtos.user.UserDTO;
+import pl.coderslab.charity.dtos.user.ChangeEmailDTO;
+import pl.coderslab.charity.dtos.user.EditUserDetailsDTO;
 import pl.coderslab.charity.exceptions.InvalidOldPasswordException;
 import pl.coderslab.charity.services.RegistrationService;
 import pl.coderslab.charity.services.UserService;
@@ -42,7 +42,7 @@ public class UserPanelController {
     }
 
     @PostMapping("/editUser")
-    public String updateAdmin(@ModelAttribute EditUserDTO userDTO, BindingResult result) {
+    public String update(@ModelAttribute EditUserDetailsDTO userDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "user/editUser";
         }
@@ -68,13 +68,13 @@ public class UserPanelController {
     }
 
     @PostMapping("/changePassword")
-    public String changePasswordDTO(@Valid PasswordDTO password, BindingResult result) {
+    public String changePasswordDTO(@Valid @ModelAttribute("password") PasswordDTO password, BindingResult result) {
         if (result.hasErrors()) {
             return "user/changePassword";
         }
         try {
             registrationService.changePassword(password);
-        } catch (InvalidOldPasswordException exception){
+        } catch (InvalidOldPasswordException exception) {
             String message = exception.getMessage();
 //            Path propertyPath = exception.;
 //            String property = Iterables.getLast(propertyPath).toString();
@@ -84,4 +84,31 @@ public class UserPanelController {
 
         return "redirect:/user";
     }
+
+    @GetMapping("/changeEmail")
+    public String changeEmail(Model model) {
+        model.addAttribute("email", new ChangeEmailDTO());
+        return "user/changeEmail";
+    }
+
+    @PostMapping("/changeEmail")
+    public String saveNewEmail(@Valid @ModelAttribute("email") ChangeEmailDTO emailDTO, BindingResult result){
+        if (result.hasErrors()) {
+            return "user/changeEmail";
+        }
+        try {
+            registrationService.changeEmail(emailDTO);
+        } catch (ConstraintViolationException exception){
+            Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String message = violation.getMessage();
+                Path propertyPath = violation.getPropertyPath();
+                String property = Iterables.getLast(propertyPath).toString();
+                result.rejectValue(property, message);
+            }
+            return "user/changeEmail";
+        }
+        return "redirect:/user";
+    }
+
 }

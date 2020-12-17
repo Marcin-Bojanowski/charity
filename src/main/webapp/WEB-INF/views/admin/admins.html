@@ -15,7 +15,11 @@
 
 
     <!-- SLIDE 1 -->
+
     <div class="help--slides active" data-id="1">
+        <div>
+            <label th:class="err" th:if="${error!=null}" th:text="#{${error}}"></label><br>
+        </div>
 
         <th:block  th:each="i: ${#numbers.sequence(0,  admins.size()-1,2)}">
 

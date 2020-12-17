@@ -4,13 +4,11 @@ package pl.coderslab.charity.utilities;
 import com.remondis.remap.Mapper;
 import com.remondis.remap.Mapping;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import pl.coderslab.charity.dtos.category.CategoryDTO;
 import pl.coderslab.charity.dtos.donation.DonationDTO;
@@ -19,7 +17,7 @@ import pl.coderslab.charity.dtos.donation.NewDonationDTO;
 import pl.coderslab.charity.dtos.institution.InstitutionDTO;
 
 import pl.coderslab.charity.dtos.institution.NewInstitutionDTO;
-import pl.coderslab.charity.dtos.user.EditUserDTO;
+import pl.coderslab.charity.dtos.user.EditUserDetailsDTO;
 import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.Category;
 import pl.coderslab.charity.entities.Donation;
@@ -29,17 +27,12 @@ import pl.coderslab.charity.entities.User;
 import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.InstitutionService;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Getter
 @Setter
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class CustomMapper {
     private InstitutionService institutionService;
@@ -69,10 +62,11 @@ public class CustomMapper {
         return mapper.map(user);
     }
 
-    public EditUserDTO mapLoggedUser(User user) {
-        Mapper<User, EditUserDTO> mapper = Mapping
+    public EditUserDetailsDTO mapLoggedUser(User user) {
+        Mapper<User, EditUserDetailsDTO> mapper = Mapping
                 .from(User.class)
-                .to(EditUserDTO.class)
+                .to(EditUserDetailsDTO.class)
+                .omitInSource(User::getEmail)
                 .omitInSource(User::getRoles)
                 .omitInSource(User::getPassword)
                 .omitInSource(User::getEnabled)

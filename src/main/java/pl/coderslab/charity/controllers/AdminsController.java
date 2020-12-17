@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.user.NewUserDTO;
 import pl.coderslab.charity.dtos.user.UserDTO;
 import pl.coderslab.charity.entities.User;
+import pl.coderslab.charity.exceptions.LoggedAdminDeleteException;
 import pl.coderslab.charity.services.RegistrationService;
 import pl.coderslab.charity.services.UserService;
 
@@ -25,37 +26,38 @@ import java.util.Set;
 public class AdminsController {
 
     private final UserService userService;
-private final RegistrationService registrationService;
+    private final RegistrationService registrationService;
+
     @ModelAttribute("admins")
     public List<UserDTO> getAdmins() {
-      return   userService.getAllAdminsDTO();
+        return userService.getAllAdminsDTO();
     }
 
     @GetMapping("/admins")
-    public String getAllAdmins(){
+    public String getAllAdmins() {
         return "admin/admins";
     }
 
     @GetMapping("/addAdmin")
-    public String addAdmin(Model model){
-        model.addAttribute("admin",new NewUserDTO());
+    public String addAdmin(Model model) {
+        model.addAttribute("admin", new NewUserDTO());
         return "admin/addAdmin";
     }
 
     @PostMapping("/addAdmin")
-    public String saveAdmin(@Valid NewUserDTO newUserDTO, BindingResult result){
-        if (result.hasErrors()){
+    public String saveAdmin(@Valid @ModelAttribute("admin") NewUserDTO newUserDTO, BindingResult result) {
+        if (result.hasErrors()) {
             return "admin/addAdmin";
         }
         try {
             registrationService.registerAdmin(newUserDTO);
-        } catch (ConstraintViolationException exception){
+        } catch (ConstraintViolationException exception) {
             Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
             for (ConstraintViolation<?> violation : violations) {
                 String message = violation.getMessage();
-                Path propertyPath =violation.getPropertyPath();
+                Path propertyPath = violation.getPropertyPath();
                 String property = Iterables.getLast(propertyPath).toString();
-                result.rejectValue(property,message);
+                result.rejectValue(property, message);
             }
             return "admin/addAdmin";
         }
@@ -63,25 +65,25 @@ private final RegistrationService registrationService;
     }
 
     @GetMapping("/editAdmin/{id}")
-    public String editAdmin(@PathVariable Long id, Model model){
-        model.addAttribute("admin",userService.getUserToEdit(id));
+    public String editAdmin(@PathVariable Long id, Model model) {
+        model.addAttribute("admin", userService.getUserToEdit(id));
         return "admin/editAdmin";
     }
 
     @PostMapping("/editAdmin")
-    public String updateAdmin(@ModelAttribute UserDTO userDTO, BindingResult result){
-        if (result.hasErrors()){
+    public String updateAdmin(@Valid @ModelAttribute("admin") UserDTO userDTO, BindingResult result) {
+        if (result.hasErrors()) {
             return "admin/editAdmin";
         }
         try {
             registrationService.update(userDTO);
-        } catch (ConstraintViolationException exception){
+        } catch (ConstraintViolationException exception) {
             Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
             for (ConstraintViolation<?> violation : violations) {
                 String message = violation.getMessage();
-                Path propertyPath =violation.getPropertyPath();
+                Path propertyPath = violation.getPropertyPath();
                 String property = Iterables.getLast(propertyPath).toString();
-                result.rejectValue(property,message);
+                result.rejectValue(property, message);
             }
             return "admin/editAdmin";
         }
@@ -89,8 +91,14 @@ private final RegistrationService registrationService;
     }
 
     @GetMapping("/deleteAdmin/{id}")
-    public String deleteAdmin(@PathVariable Long id){
-        userService.delete(id);
+    public String deleteAdmin(@PathVariable Long id, Model model) {
+        try {
+            userService.delete(id);
+        } catch (LoggedAdminDeleteException exception) {
+            model.addAttribute("error", exception.getMessage());
+            return "admin/admins";
+        }
+
         return "redirect:/admin/admins";
     }
 }

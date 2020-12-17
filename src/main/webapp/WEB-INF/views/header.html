@@ -23,7 +23,9 @@
             </th:block>
             <th:block sec:authorize="hasRole('ROLE_USER')">
                 <li class="logged-user">
-                    <th:block sec:authentication="principal.user.name"></th:block>
+
+            <th:block sec:authentication="principal.user.name"></th:block>
+
                     <ul class="dropdown">
                         <li><a th:href="@{/user}">Profil</a></li>
                         <li><a th:href="@{/user/editUser}">Edycja konta</a></li>

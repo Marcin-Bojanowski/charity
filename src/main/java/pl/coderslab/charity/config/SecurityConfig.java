@@ -27,19 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
+
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        try{
             auth.userDetailsService(customUserDetailsService());
-        } catch (DisabledException exception){
-           log.info(exception.getMessage());
-        }
-
     }
 
     @Bean

@@ -12,13 +12,14 @@
 <header th:include="header"></header>
 <section class="login-page">
     <h2>Nowa fundacja</h2>
-    <form th:object="${newInstitution}" th:method="post" th:action="@{/admin/addInstitution}" >
-        <div class="form-group">
-            <input th:field="*{name}" type="text" name="name" placeholder="Name" />
-            <p th:errors="*{name}"></p>
+    <form th:object="${newInstitutionDTO}" th:method="post" th:action="@{/admin/addInstitution}" >
+        <div class="form-group form-group--inline">
+            <input th:field="*{name}" type="text" name="name" placeholder="Name" /><br>
+            <label th:class="err" th:errors="*{name}"></label>
         </div>
-        <div class="form-group">
-            <input th:field="*{description}" type="text" name="description" placeholder="Description" />
+        <div class="form-group form-group--inline">
+            <input th:field="*{description}" type="text" name="description" placeholder="Description" /><br>
+            <label th:class="err" th:errors="*{description}"></label>
         </div>
 
         <div class="form-group form-group--buttons">

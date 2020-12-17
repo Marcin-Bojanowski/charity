@@ -40,6 +40,7 @@ private final VerificationTokenService verificationTokenService;
     @PostMapping
     public String register(@Valid NewUserDTO newUserDTO, BindingResult result, Model model){
         if (result.hasErrors()){
+            log.info(result.toString());
             return "register";
         }
         try {

@@ -8,13 +8,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class EditUserDTO  {
+public class EditUserDetailsDTO {
 
     private Long id;
-    @NotBlank(message = "{not.blank.message}")
-    @Email
-    @UniqueEmail(groups = Registration.class)
-    private String email;
+
+    @NotBlank
     private String name;
+    @NotBlank
     private String surname;
 }
