@@ -24,11 +24,16 @@ import java.util.stream.Collectors;
 public class InstitutionService {
     private final InstitutionRepository institutionRepository;
     private CustomMapper customMapper;
-private final DonationService donationService;
+    private DonationService donationService;
 
     @Autowired
     private void setCustomMapper(CustomMapper customMapper) {
         this.customMapper = customMapper;
+    }
+
+    @Autowired
+    private void setDonationService(DonationService donationService){
+        this.donationService=donationService;
     }
 
     public List<InstitutionDTO> getAll() {
@@ -52,15 +57,15 @@ private final DonationService donationService;
     }
 
     public void update(InstitutionDTO institutionDTO) {
-        Institution institution=institutionRepository.getOne(institutionDTO.getId());
+        Institution institution = institutionRepository.getOne(institutionDTO.getId());
         institution.setName(institutionDTO.getName());
         institution.setDescription(institutionDTO.getDescription());
         institutionRepository.save(institution);
     }
 
     public void delete(Long id) {
-        Institution institution=institutionRepository.getOne(id);
-        List<Donation> donations=donationService.getAllByInstitution(institution);
+        Institution institution = institutionRepository.getOne(id);
+        List<Donation> donations = donationService.getAllByInstitution(institution);
         log.info(donations.toString());
         institutionRepository.delete(institution);
         donations.forEach(donation -> donation.setInstitution(null));
