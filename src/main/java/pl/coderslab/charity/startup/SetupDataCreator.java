@@ -21,16 +21,20 @@ public class SetupDataCreator implements ApplicationRunner {
     }
 
     private void createMainUsers() {
-        createUserIfNotExists("admin@gmail.com", "admin", "admin", "admin", "ROLE_ADMIN");
+        createUserIfNotExists("admin@adminmail.com", "admin", "admin", "admin",true,true,"ROLE_ADMIN");
+        createUserIfNotExists("root@rootmail.com", "root", "root", "root",true,true,"ROLE_USER");
     }
 
-    public void createUserIfNotExists(String email, String name, String surname, String password, String role) {
+    public void createUserIfNotExists(String email, String name, String surname, String password, Boolean accountEnabled,
+                                      Boolean accountLocked, String role) {
         if (userService.getByEmail(email) == null) {
             User user = new User();
             user.setSurname(surname);
             user.setName(name);
             user.setPassword(passwordEncoder.encode(password));
             user.setEmail(email);
+            user.setEnabled(accountEnabled);
+            user.setLocked(accountLocked);
             user.getRoles().add(role);
             userService.save(user);
         }
