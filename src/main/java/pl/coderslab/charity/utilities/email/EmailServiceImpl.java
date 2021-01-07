@@ -1,6 +1,7 @@
 package pl.coderslab.charity.utilities.email;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,6 +20,9 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
+    @Value("${spring.mail.username}")
+    private String username;
+
     @Override
     public void sendSimpleEmail(String to, String name, String token) throws MessagingException {
 
@@ -31,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessage message=mailSender.createMimeMessage();
         MimeMessageHelper messageHelper=new MimeMessageHelper(message,true,"UTF-8");
-        messageHelper.setFrom("java.sending.emails@gmail.com");
+        messageHelper.setFrom(username);
         messageHelper.setTo(to);
         messageHelper.setSubject("Aktywacja konta w serwisie charity");
         messageHelper.setText(body,true);

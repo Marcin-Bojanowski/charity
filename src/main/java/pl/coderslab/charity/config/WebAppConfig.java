@@ -1,6 +1,8 @@
 package pl.coderslab.charity.config;
 
 
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,28 +19,10 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "pl.coderslab")
 public class WebAppConfig implements WebMvcConfigurer {
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/login").setViewName("login");
-////        registry.addViewController("/403").setViewName("403");
-//    }
-//
-//
-//    @Bean
-//    public MessageSource messageSource() {
-//        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-//        messageSource.setBasename("classpath:messages");
-//        messageSource.setDefaultEncoding("UTF-8");
-//        return messageSource;
-//    }
-//
-//    @Bean
-//    @Override
-//    public Validator getValidator() {
-//        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-//        bean.setValidationMessageSource(messageSource());
-//        return bean;
-//    }
+    @Value("${spring.mail.username}")
+    private String username;
+    @Value("${spring.mail.password}")
+    private String password;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -46,8 +30,8 @@ public class WebAppConfig implements WebMvcConfigurer {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("java.sending.emails@gmail.com");
-        mailSender.setPassword("vlczecumujiyfblv");
+        mailSender.setUsername(username);
+        mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
