@@ -29,12 +29,12 @@ Project is created with:
 ### Check the app
 You can check working demo app here: https://portfolio-charity.herokuapp.com/ \
 You can log in on user account: 
-* login: root@rootmail.com
+* login: root@rootmail<span>.com
 * password: root
 
 or on admin account
 
-* login: admin@adminmail.com
+* login: admin@adminmail<span>.com
 * password: admin
 
 As user you can check simple example of donations and thier details, or create some new donations. As admin you can check predefined institutions, add new institution and much more. What is more, you can register your own account but remember **registration process include account activation, so you will get email with activation link** . Enjoy!
