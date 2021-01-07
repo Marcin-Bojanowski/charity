@@ -1,5 +1,5 @@
 # charity
-App designed for people who train in the gym (especially powerlifters and bodybuilders), which allows you to create your own training programs and save your workouts. In the future, it will include tools to track training progress, as well as interactions between users to exchange training programs and training tips. 
+App which allow user to donate his unnecessary stuff to trusted institutions.The purpose of this project was to build and implement back-end layer to already designed front-end layer. The already designed part iclude: graphics, layout, CSS, JS. Back-end part and some parts of layouts (forms with Thymeleaf) was done by me.
 
 ### Technologies
 Project is created with:
@@ -8,33 +8,33 @@ Project is created with:
 * Spring Security
 * Spring Data JPA/Hibernate
 * Spring Web (MVC)
-* JSP
-* bulma.io
+* Thymeleaf
 * MySQL
 * Maven.
 
 ### Features
 #### User
-* Create your own training program
-* Save your workouts
-* Check your trainig history
+* Giving donations
+* Personal data edition
+* Donations management
+* Archiving donations
 #### Admin
-* Create new exercies available for users
+* Foundation management
+* Admin management
+* User management
 ### Future features
-* Interaction with other users
-* Get predefined training program
-* Training progress tracking tools
-* Get training tips from other users
+* Support forgotten passwords
+* Multiple languages
 
 ### Check the app
-You can check working demo app here: https://dziennik-treningowy.herokuapp.com/ \
+You can check working demo app here: https://portfolio-charity.herokuapp.com/ \
 You can log in on user account: 
-* login: root
+* login: root@rootmail.com
 * password: root
 
 or on admin account
 
-* login: admin
+* login: admin@adminmail.com
 * password: admin
 
-As user you can check simple example of training program and finished workouts create by me or create something new. As admin you can add some new exercies. What is more, you can register your own account. Enjoy!
+As user you can check simple example of donations and thier details, or create some new donations. As admin you can check predefined institutions, add new institution and much more. What is more, you can register your own account but remember **registration process include account activation, so you will get email with activation link** . Enjoy!
