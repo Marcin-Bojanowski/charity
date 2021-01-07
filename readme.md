@@ -1,12 +1,40 @@
-<img alt="Logo" src="http://coderslab.pl/svg/logo-coderslab.svg" width="400">
+# charity
+App which allow user to donate his unnecessary stuff to trusted institutions.The purpose of this project was to build and implement back-end layer to already designed front-end layer. The already designed part iclude: graphics, layout, CSS, JS. Back-end part and some parts of layouts (forms with Thymeleaf) was done by me.
 
+### Technologies
+Project is created with:
+* Java 11
+* Spring Boot
+* Spring Security
+* Spring Data JPA/Hibernate
+* Spring Web (MVC)
+* Thymeleaf
+* MySQL
+* Maven.
 
-Przed przystąpieniem do pracy  przeczytaj poniższe wskazówki.
-## Jak zacząć?
+### Features
+#### User
+* Giving donations
+* Personal data edition
+* Donations management
+* Archiving donations
+#### Admin
+* Foundation management
+* Admin management
+* User management
+### Future features
+* Support forgotten passwords
+* Multiple languages
 
-1. Zaimportuj projekt jako projekt `Maven`, wg poniższych wskazówek:
+### Check the app
+You can check working demo app here: https://portfolio-charity.herokuapp.com/ \
+You can log in on user account: 
+* login: root@rootmail<span>.com
+* password: root
 
-	* W `IntelliJ` wybieramy: `File –> New –> Project from Existing Sources...`
-	* Wskazujemy lokalizację katalogu ze sklonowanym projektem i zatwierdzamy.
-	* Następnie w nowym oknie wybieramy: `Import project from external model` i wskazujemy `Maven`
-	* Wybieramy kolejno opcje: `Next –> Next –> Next –> Finish`
+or on admin account
+
+* login: admin@adminmail<span>.com
+* password: admin
+
+As user you can check simple example of donations and thier details, or create some new donations. As admin you can check predefined institutions, add new institution and much more. What is more, you can register your own account but remember **registration process include account activation, so you will get email with activation link** . Enjoy!
