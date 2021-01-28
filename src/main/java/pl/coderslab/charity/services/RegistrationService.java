@@ -59,7 +59,7 @@ public class RegistrationService {
         verificationTokenService.save(verificationToken);
 
         try {
-            emailService.sendSimpleEmail(newUserDTO.getEmail(), savedUser.getName(), verificationToken.getToken());
+            emailService.sendActivationEmail(newUserDTO.getEmail(), savedUser.getName(), verificationToken.getToken());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public class RegistrationService {
         verificationTokenService.save(verificationToken);
 
         try {
-            emailService.sendSimpleEmail(savedUser.getEmail(), savedUser.getName(), verificationToken.getToken());
+            emailService.sendActivationEmail(savedUser.getEmail(), savedUser.getName(), verificationToken.getToken());
         } catch (MessagingException e) {
             e.printStackTrace();
         }

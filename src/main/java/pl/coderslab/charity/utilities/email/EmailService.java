@@ -4,5 +4,7 @@ import javax.mail.MessagingException;
 
 public interface EmailService {
 
-    void sendSimpleEmail (String to,  String name, String token) throws MessagingException;
+    void sendActivationEmail (String to,  String name, String token) throws MessagingException;
+
+    void resetPassword (String to,  String name, String token) throws MessagingException;
 }

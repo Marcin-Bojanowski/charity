@@ -2,12 +2,14 @@ package pl.coderslab.charity.config;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.validation.Validator;
@@ -24,6 +26,17 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Value("${spring.mail.password}")
     private String password;
 
+    @Autowired
+    private Environment environment;
+
+//    @Bean(name = "environment")
+//    public Environment getEnvironment() {
+//        return environment;
+//    }
+
+//    public void setEnvironment(final Environment environment) {
+//        this.environment = environment;
+//    }
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

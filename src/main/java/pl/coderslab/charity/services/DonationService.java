@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.dtos.donation.DonationDTO;
@@ -31,7 +32,7 @@ public class DonationService {
 
     private final DonationRepository donationRepository;
     private CustomMapper customMapper;
-private LoggedUser loggedUser;
+    private LoggedUser loggedUser;
 
     @Autowired
     private void setLoggedUser(LoggedUser loggedUser) {
@@ -54,14 +55,14 @@ private LoggedUser loggedUser;
     }
 
     public void save(NewDonationDTO newDonationDTO) {
-        Donation donation=customMapper.map(newDonationDTO);
+        Donation donation = customMapper.map(newDonationDTO);
         donation.setIsPickedUp(false);
         donationRepository.save(donation);
     }
 
 
     public List<DonationDTO> getUserDonations() {
-        List<Donation> donations = donationRepository.getAllByUserId(loggedUser.getLoggedUserId());
+        List<Donation> donations = donationRepository.getAllByUserId(loggedUser.getLoggedUserId(), Sort.by("isPickedUp").and(Sort.by("donePickUpDate")).and(Sort.by("donePickUpTime")));
         return donations.stream().map(donation -> customMapper.mapToDonationDTO(donation)).collect(Collectors.toList());
     }
 
@@ -70,7 +71,7 @@ private LoggedUser loggedUser;
     }
 
     public void setPickUp(PickUpDetailsDTO pickUpDetailsDTO) {
-        Donation donation=donationRepository.getOne(pickUpDetailsDTO.getDonationId());
+        Donation donation = donationRepository.getOne(pickUpDetailsDTO.getDonationId());
         donation.setIsPickedUp(true);
         donation.setDonePickUpDate(pickUpDetailsDTO.getDonePickUpDate());
         donation.setDonePickUpTime(pickUpDetailsDTO.getDonePickUpTime());
